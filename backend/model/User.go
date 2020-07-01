@@ -7,6 +7,7 @@ import (
 type User struct {
 	Username string  `gorm:"column:username" `
 	Password string
+	Email   string  `gorm:"column:email"`
 	InsertTime string
 	UpdateTime string
 }

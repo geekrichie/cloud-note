@@ -13,15 +13,20 @@ import (
 func RegisterAction(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
+	email    := c.PostForm("email")
+    fmt.Println(password);
+	fmt.Println(username);
 	w := md5.New()
 	w.Write([]byte(password))
 	md5password := fmt.Sprintf("%x", w.Sum(nil))
 	user := &model.User{
 		Username: username,
 		Password: md5password,
+		Email : email,
 		UpdateTime: time.Now().Format("2006-01-02 15:04:05"),
 		InsertTime: time.Now().Format("2006-01-02 15:04:05"),
 	}
+	fmt.Println(user)
 	status := user.Save()
 	if status == true {
 		c.JSON(http.StatusOK,gin.H{
