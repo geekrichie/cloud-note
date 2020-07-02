@@ -5,17 +5,19 @@ import (
 )
 
 type User struct {
-	Username string  `gorm:"column:username" `
-	Password string
-	Email   string  `gorm:"column:email"`
+	Username string  `gorm:"column:username;unique;not null" `
+	Password string  `gorm:"column:password;not null"`
+	Email   string  `gorm:"column:email;unique;not null"`
 	InsertTime string
 	UpdateTime string
 }
 
 func (user *User) Save() bool{
 	db := config.GetDB()
-	db.Create(user)
 	result := db.NewRecord(user)
+	if result {
+		db.Create(user)
+	}
     return result
 }
 

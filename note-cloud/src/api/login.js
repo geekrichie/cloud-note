@@ -27,10 +27,9 @@ export function postFetch(url, params,config) {
 
 export default {
     postUserRegister(params) {
-        return postFetch("api/register",params,{
-            headers :{
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
+        return postFetch("api/register",params)
+    },
+    postUserLogin(params) {
+        return postFetch("api/signin",params)
     }
 }

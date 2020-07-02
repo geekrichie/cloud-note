@@ -14,8 +14,6 @@ func RegisterAction(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 	email    := c.PostForm("email")
-    fmt.Println(password);
-	fmt.Println(username);
 	w := md5.New()
 	w.Write([]byte(password))
 	md5password := fmt.Sprintf("%x", w.Sum(nil))
@@ -26,7 +24,6 @@ func RegisterAction(c *gin.Context) {
 		UpdateTime: time.Now().Format("2006-01-02 15:04:05"),
 		InsertTime: time.Now().Format("2006-01-02 15:04:05"),
 	}
-	fmt.Println(user)
 	status := user.Save()
 	if status == true {
 		c.JSON(http.StatusOK,gin.H{
@@ -63,9 +60,17 @@ func LoginAction(c *gin.Context) {
 		})
 		return
 	}
+	//token := jwt.New(jwt.SigningMethodHS256)
+	//claims := make(jwt.MapClaims)
+	//claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+	//claims["iat"] = time.Now().Unix()
+	//token.Claims = claims
 		c.JSON(http.StatusOK, gin.H{
-			"code": -2,
+			"code": 0,
 			"msg":  "登录成功",
+			"data": gin.H{
+				"username" : username,
+			},
 		})
 
 }

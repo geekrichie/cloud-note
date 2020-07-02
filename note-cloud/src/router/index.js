@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Login from '../components/Login'
 import Register from '../components/Register'
+import Main from '../components/Main'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -8,6 +9,7 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
+    { path: '/', component: Main }
 ]
 
 const router = new VueRouter({

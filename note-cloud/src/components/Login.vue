@@ -13,14 +13,39 @@
                     <el-input v-model="password" show-password></el-input>
                 </div>
                 <div class="pad">
-                    <el-button class = "submit-btn" type="success">登录</el-button>
+                    <el-button class = "submit-btn" type="success" @click="login">登录</el-button>
                 </div>
             </el-card>
         </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
-    
+    data() {
+          return {
+              username : "",
+              password : "",
+          }
+    },
+    computed :{
+         ...mapState('login', [
+             'isLogin'
+         ])
+    },
+    methods: {
+        ...mapActions('login',[
+            'userLogin'
+        ]),
+        async login() {
+            let userInfo = new FormData();
+            userInfo.append("username",this.username)
+            userInfo.append("password",this.password)
+            await this.userLogin(userInfo)
+            if(this.isLogin) {
+                this.$router.push("/")
+            }
+        },
+    }
 }
 </script>
 <style scoped>
