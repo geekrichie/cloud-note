@@ -2,6 +2,7 @@ package model
 
 import (
 	"cloud-note/config"
+	"fmt"
 )
 
 type User struct {
@@ -14,11 +15,11 @@ type User struct {
 
 func (user *User) Save() bool{
 	db := config.GetDB()
-	result := db.NewRecord(user)
-	if result {
-		db.Create(user)
+	if err := db.Create(user).Error; err != nil {
+		fmt.Println(err);
+		return false;
 	}
-    return result
+	return true;
 }
 
 func (user *User) Find(username string) {
