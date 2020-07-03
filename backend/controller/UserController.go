@@ -4,16 +4,30 @@ import (
 	"cloud-note/model"
 	"crypto/md5"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+// Create the JWT key used to create the signature
+var jwtKey = []byte("my_secret_key")
+
+type Claims struct {
+	Username string `json:"username"`
+	jwt.StandardClaims
+}
+
 func RegisterAction(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 	email    := c.PostForm("email")
+	if username == "" || password == "" || email ==  ""{
+		c.Writer.WriteHeader(http.StatusForbidden)
+		return
+	}
 	w := md5.New()
 	w.Write([]byte(password))
 	md5password := fmt.Sprintf("%x", w.Sum(nil))
@@ -60,17 +74,61 @@ func LoginAction(c *gin.Context) {
 		})
 		return
 	}
-	//token := jwt.New(jwt.SigningMethodHS256)
-	//claims := make(jwt.MapClaims)
-	//claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
-	//claims["iat"] = time.Now().Unix()
-	//token.Claims = claims
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  "登录成功",
-			"data": gin.H{
-				"username" : username,
-			},
-		})
+	expirationTime := time.Now().Add(30 * time.Minute);
 
+	claims :=&Claims{
+		Username: username,
+		StandardClaims: jwt.StandardClaims{
+			//the expiry time is expressed
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+   //Declare the token with the algorithm used for signing, and the claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	//Create the JWT string
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "登录成功",
+		"data": gin.H{
+			"username" : username,
+			"token" : tokenString,
+		},
+	})
+
+}
+
+
+func HelloAction(c *gin.Context) {
+	username, err := c.Get("username")
+	if err != true {
+		log.Println("username is null")
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "hello",
+		"data": gin.H{
+			"msg" : "you jwt_token is valid",
+			"username":username,
+		},
+	})
+}
+
+func ParseToken(tokenString string) (string, error){
+    claims := &Claims{}
+    token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token)(interface{}, error) {
+    	return jwtKey,nil
+	})
+    if err != nil {
+    	return "", err
+	}
+	if !token.Valid {
+		return "", err
+	}
+	return claims.Username,nil
 }

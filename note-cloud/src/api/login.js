@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from './fetch'
 
 export function fetch(url, params) {
     return new Promise((resolve, reject) => {
@@ -31,5 +31,8 @@ export default {
     },
     postUserLogin(params) {
         return postFetch("api/signin",params)
+    },
+    getHello(params) {
+        return fetch("api/hello", params);
     }
 }
