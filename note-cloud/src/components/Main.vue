@@ -8,7 +8,7 @@ export default {
     created() {
       api.getHello().then(res=> {
           console.log(res.msg)
-      })
+      }).catch(()=>{})
     }
 }
 </script>

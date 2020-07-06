@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message,Loading } from 'element-ui'
 import Cookies from 'js-cookie'
+import router from '../router'
 
 let loadingInstance;
 
@@ -39,9 +40,20 @@ axios.interceptors.response.use(
         return res;
     },
     error=> {
-       loadingInstance && loadingInstance.close();
-
-       return Promise.reject(error)
+      loadingInstance && loadingInstance.close();
+      switch(error.response.status)
+      {
+        case 400:
+            router.push("/login")
+            break;
+        case 401:
+            router.push("/login")
+            break;
+        default:
+            console.log("未知错误")
+            router.push("/login")
+      }
+      return Promise.reject(error)
     }
 )
 export default axios;

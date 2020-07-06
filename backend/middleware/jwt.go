@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"cloud-note/controller"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -14,7 +13,6 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		// 这里假设Token放在Header的Authorization中，并使用Bearer开头
 		// 这里的具体实现方式要依据你的实际业务情况决定
 		authHeader := c.Request.Header.Get("Authorization")
-		fmt.Println(authHeader)
 		if authHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": 401,
