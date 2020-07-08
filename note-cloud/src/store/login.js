@@ -1,4 +1,5 @@
 import api from "../api/login"
+import Cookies from 'js-cookie'
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -27,6 +28,12 @@ const actions = {
              commit("login", false)
              commit("setUserName", null)
          }
+     },
+     logout({commit}) {
+        localStorage.removeItem('user');
+        Cookies.remove("jwt-token");
+        commit("login", false)
+        commit("setUserName", null)
      }
 }
 

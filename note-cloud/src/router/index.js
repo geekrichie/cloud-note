@@ -25,7 +25,9 @@ router.beforeEach((to, from, next) => {
     // redirect to login page
     if (authRequired && !loggedIn) {
       next('/login');
-    } else {
+    } else if(!authRequired && loggedIn) {
+      next('/');
+    }else {
       next();
     }
   });

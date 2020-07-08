@@ -1,14 +1,16 @@
 <template>
-    <div>我是主页</div>
+    <div class="main">我是主页</div>
     
 </template>
 <script>
-import api from '@/api/login'
 export default {
     created() {
-      api.getHello().then(res=> {
-          console.log(res.msg)
-      }).catch(()=>{})
+        
     }
 }
 </script>
+<style scoped>
+.main {
+    text-align:left;
+}
+</style>
