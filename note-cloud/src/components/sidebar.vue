@@ -26,7 +26,8 @@
                     class="el-menu-vertical-article"        
                     background-color="#ffffff"
                     text-color="#000">  
-                    <el-menu-item v-for="(file, index) in selectDocument" class ="add-note" :key ="index" :index="index" @click="articleChange(file.id)">   
+                    <el-menu-item v-for="(file, index) in selectDocument"
+                    :key ="index" :index="file.file_id" @click="articleChange(file.file_id)">   
                         <span slot="title">{{ file.title }}</span> 
                     </el-menu-item>
                 </el-menu>
@@ -58,7 +59,12 @@ export default {
     },
     methods:{
           articleChange(id) {
-              console.log(id);
+            //  let path = this.$route.path;
+             let noteid = this.$route.params.noteid
+             let fid = this.$route.params.fid
+             if( id != noteid) {
+                 this.$router.push({path:`/file/${fid}/note/${id}`})
+             }
           }
     },
     created() {
@@ -88,9 +94,6 @@ export default {
     width:300px;
     height:100%;
 }
-.add-note{
-    background-color:#52ee0a;
-} 
 .el-menu-item.is-active {
     background-color:#d3d3d3
 }

@@ -21,15 +21,15 @@
         "file" :[
             {
                 "folder_id" : "2",
-                "file_id":"3",
-                "title": "文档3",
-                "text" : "这是我的第三份文档"
-            },
-            {
-                "folder_id" : "2",
                 "file_id":"2",
                 "title": "文档2",
                 "text":"这是我的第二份文档"
+            },
+            {
+                "folder_id" : "2",
+                "file_id":"3",
+                "title": "文档3",
+                "text" : "这是我的第三份文档"
             },
             {
                 "folder_id" : "1",
