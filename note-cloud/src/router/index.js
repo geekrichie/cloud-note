@@ -9,7 +9,8 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/', component: Main }
+    { path: '/', component: Main },
+    { path: '/file/:fid/note/:noteid', component: Main }
 ]
 
 const router = new VueRouter({

@@ -1,0 +1,48 @@
+{
+    "data":{
+       "structure": [
+            {
+                "folder_id" : "1",
+                "name": "个人文档",
+                "files" : [
+                    "4",
+                    "5"
+                ]
+            },
+            {
+                "folder_id" : "2",
+                "name": "猜你喜欢",
+                "files" : [
+                    "2",
+                    "3"
+                ]
+            }
+        ],
+        "file" :[
+            {
+                "folder_id" : "2",
+                "file_id":"3",
+                "title": "文档3",
+                "text" : "这是我的第三份文档"
+            },
+            {
+                "folder_id" : "2",
+                "file_id":"2",
+                "title": "文档2",
+                "text":"这是我的第二份文档"
+            },
+            {
+                "folder_id" : "1",
+                "file_id":"4",
+                "title": "文档4",
+                "text" : "这是我的第四份文档"
+            },
+            {
+                "folder_id" : "1",
+                "file_id":"5",
+                "title": "文档5",
+                "text":"这是我的第五份文档"
+            }
+        ]
+    }
+}
