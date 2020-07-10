@@ -32,18 +32,11 @@
                     </el-menu-item>
                 </el-menu>
            </div>
-           <div class="article-editor">
-               <editor outsize="100%"></editor>
-               </div>
     </div>
 </template>
 <script>
 import res from "../assets/json/interface.json"
-import Editor from "./Editor"
 export default {
-    components:{
-       Editor
-    },
     data() {
          return {
             structure:[],

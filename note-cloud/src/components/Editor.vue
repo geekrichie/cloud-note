@@ -1,7 +1,9 @@
 <template>
     <div :style="{height:outsize}">
          <editor
+         :id = "tinymceID"
        api-key="xjmfct767jqqoy263mz2swmxk18yzwwi2gsz3tc8zlpbakil"
+        v-model="content"
        :init="{
          height: outsize,
          menubar: false,
@@ -26,8 +28,14 @@
    components: {
      'editor': Editor
    },
+   data() {
+     return {
+         content:"",
+     }
+   },
    props:[
-       'outsize'
+       'outsize',
+       'tinymceID'
    ]
  }
  </script>
