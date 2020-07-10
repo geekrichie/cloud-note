@@ -32,16 +32,26 @@
                     </el-menu-item>
                 </el-menu>
            </div>
+           <div class="article-editor">
+               <editor outsize="100%"></editor>
+               </div>
     </div>
 </template>
 <script>
 import res from "../assets/json/interface.json"
+import Editor from "./Editor"
 export default {
+    components:{
+       Editor
+    },
     data() {
          return {
             structure:[],
             documents:[],
             navMenu:[],
+            outsize:{
+                height:"100%"
+            }
          }
     },
     computed: {
@@ -106,6 +116,13 @@ export default {
     left:301px;
     width:300px;
     bottom :0px;
+}
+.article-editor{
+    position:absolute;
+    top:0px;
+    left:601px;
+    bottom :0px;
+    right:50px;
 }
 ul,.folder-menu {
     height:100%;
