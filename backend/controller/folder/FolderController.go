@@ -4,7 +4,6 @@ import (
 	"cloud-note/model"
 	"cloud-note/service/file"
 	"cloud-note/service/folder"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -18,7 +17,6 @@ func GetFoldersAction(c *gin.Context) {
 	 var folders []model.Folder
 	if value, ok := uid.(int); ok {
 		folders = folder.GetUserFolders(value)
-		fmt.Println(folders)
 	}
 	var res []interface{}
 	for _,fd := range folders {
@@ -35,5 +33,19 @@ func GetFoldersAction(c *gin.Context) {
 	c.JSON(http.StatusOK,gin.H{
 		"code" : 1,
 		"data" : res,
+	})
+}
+
+func GetFilesAction(c *gin.Context) {
+	uid, existed := c.Get("uid")
+	if !existed {
+		log.Panic("uid is not existed")
+	}
+	var files []model.File
+    file.GetFilesByUid(uid.(int),&files)
+	//var res []interface{}
+	c.JSON(http.StatusOK,gin.H{
+		"code" : 1,
+		"data" : files,
 	})
 }

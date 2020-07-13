@@ -41,6 +41,7 @@ func StartServer() {
 	{
 		authGroup.GET("hello", user.HelloAction)
 		authGroup.GET("folder/all", folder.GetFoldersAction)
+		authGroup.GET("files/all",folder.GetFilesAction)
 	}
 	r.POST("/register", user.RegisterAction)
 	r.POST("/signin", user.LoginAction)
