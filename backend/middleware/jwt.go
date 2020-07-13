@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"cloud-note/controller"
+	"cloud-note/service/jwt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -32,7 +32,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		mc, err := controller.ParseToken(parts[1])
+		mc, err := jwt.ParseToken(parts[1])
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"code": 400,
@@ -42,7 +42,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		// 将当前请求的username信息保存到请求的上下文c上
-		c.Set("username", mc)
+		c.Set("uid", mc)
 		c.Next() // 后续的处理函数可以用过c.Get("username")来获取当前请求的用户信息
 	}
 }

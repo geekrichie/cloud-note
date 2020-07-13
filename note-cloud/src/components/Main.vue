@@ -11,6 +11,7 @@
 <script>
 import sidebar from './sidebar'
 import Editor from "./Editor"
+import api from "../api/login"
 export default {
    components :{
        sidebar,
@@ -22,6 +23,13 @@ export default {
                 height:"100%"
             }
        }
+   },
+   created() {
+       api.getHello().then((res)=>{
+           console.log(res)
+       }).catch((err)=>{
+          console.log(err)
+       })
    }
 }
 </script>

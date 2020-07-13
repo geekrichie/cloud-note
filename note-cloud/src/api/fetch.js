@@ -44,9 +44,13 @@ axios.interceptors.response.use(
       switch(error.response.status)
       {
         case 400:
+            localStorage.removeItem('user');
+            Cookies.remove("jwt-token");
             router.push("/login")
             break;
         case 401:
+            localStorage.removeItem('user');
+            Cookies.remove("jwt-token");
             router.push("/login")
             break;
         default:

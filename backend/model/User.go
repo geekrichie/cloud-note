@@ -5,6 +5,7 @@ import (
 )
 
 type User struct {
+	ID      int
 	Username string  //`gorm:"column:username;unique;not null" `
 	Password string  `gorm:"column:password;not null"`
 	Email   string  //`gorm:"column:email;unique;not null"`

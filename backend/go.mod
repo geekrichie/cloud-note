@@ -11,6 +11,7 @@ require (
 	github.com/go-ini/ini v1.57.0
 	github.com/jinzhu/gorm v1.9.14
 	github.com/mattn/go-shellwords v1.0.10 // indirect
+	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
 	gopkg.in/urfave/cli.v1 v1.0.0-00010101000000-000000000000 // indirect
 )
 

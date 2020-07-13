@@ -1,10 +1,10 @@
-package controller
+package user
 
 import (
 	"cloud-note/model"
+	"cloud-note/service/jwt"
 	"crypto/md5"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
 	"time"
@@ -12,13 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Create the JWT key used to create the signature
-var jwtKey = []byte("my_secret_key")
-
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
-}
 
 func RegisterAction(c *gin.Context) {
 	username := c.PostForm("username")
@@ -74,20 +67,9 @@ func LoginAction(c *gin.Context) {
 		})
 		return
 	}
-	expirationTime := time.Now().Add(30 * time.Minute);
 
-	claims :=&Claims{
-		Username: username,
-		StandardClaims: jwt.StandardClaims{
-			//the expiry time is expressed
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
 
-   //Declare the token with the algorithm used for signing, and the claims
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	//Create the JWT string
-	tokenString, err := token.SignedString(jwtKey)
+	tokenString, err := jwt.CreateToken(user.ID)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -105,9 +87,9 @@ func LoginAction(c *gin.Context) {
 
 
 func HelloAction(c *gin.Context) {
-	username, err := c.Get("username")
+	username, err := c.Get("uid")
 	if err != true {
-		log.Println("username is null")
+		log.Println("uid is null")
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 0,
@@ -117,18 +99,4 @@ func HelloAction(c *gin.Context) {
 			"username":username,
 		},
 	})
-}
-
-func ParseToken(tokenString string) (string, error){
-    claims := &Claims{}
-    token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token)(interface{}, error) {
-    	return jwtKey,nil
-	})
-    if err != nil {
-    	return "", err
-	}
-	if !token.Valid {
-		return "", err
-	}
-	return claims.Username,nil
 }
