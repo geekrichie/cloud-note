@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func GetFoldersAction(c *gin.Context) {
@@ -16,14 +17,14 @@ func GetFoldersAction(c *gin.Context) {
 	 }
 	 var folders []model.Folder
 	if value, ok := uid.(int); ok {
-		folders = folder.GetUserFolders(value)
+		folder.GetUserFolders(value, &folders)
 	}
 	var res []interface{}
 	for _,fd := range folders {
 		item := make(map[string]interface{})
         item["folder_id"] = fd.ID
         item["name"] = fd.Name
-        re := file.GetFolderFirstFile(fd.ID)
+        re := file.GetFolderLastFile(fd.ID)
 		item["files"] = "";
 		if !re.EqualObject() {
 			item["files"] = re.ID
@@ -37,13 +38,17 @@ func GetFoldersAction(c *gin.Context) {
 }
 
 func GetFilesAction(c *gin.Context) {
-	uid, existed := c.Get("uid")
-	if !existed {
-		log.Panic("uid is not existed")
+	folderid := c.Query("folderid")
+	if folderid == "" {
+		c.JSON(http.StatusOK,gin.H{
+			"code" : 0,
+			"data" : nil,
+		})
+		return
 	}
+	fd,_ := strconv.Atoi(folderid)
 	var files []model.File
-    file.GetFilesByUid(uid.(int),&files)
-	//var res []interface{}
+    file.GetFilesByFolderId(fd,&files)
 	c.JSON(http.StatusOK,gin.H{
 		"code" : 1,
 		"data" : files,

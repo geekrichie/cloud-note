@@ -34,5 +34,11 @@ export default {
     },
     getHello(params) {
         return fetch("api/hello", params);
+    },
+    getUserFolders(params) {
+        return fetch("api/folder/all", params)
+    },
+    getFilesByFolder(params) {
+        return fetch("api/files/all", {params:params})
     }
 }

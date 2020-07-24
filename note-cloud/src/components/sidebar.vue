@@ -5,7 +5,7 @@
                     class="el-menu-vertical-demo"        
                     background-color="#545c64"
                     text-color="#fff"
-                    :default-active="$router.path"
+                    :default-active="$route.path"
                     router
                     >  
                     <el-menu-item class="add-note">   
@@ -25,9 +25,10 @@
                 <el-menu
                     class="el-menu-vertical-article"        
                     background-color="#ffffff"
+                    :default-active="$route.params.noteid"
                     text-color="#000">  
                     <el-menu-item v-for="(file, index) in selectDocument"
-                    :key ="index" :index="file.file_id" @click="articleChange(file.file_id)">   
+                    :key ="index" :index="file.file_id.toString()" @click="articleChange(file.file_id)">   
                         <span slot="title">{{ file.title }}</span> 
                     </el-menu-item>
                 </el-menu>
@@ -35,7 +36,8 @@
     </div>
 </template>
 <script>
-import res from "../assets/json/interface.json"
+// import res from "../assets/json/interface.json"
+import api from "../api/login"
 export default {
     data() {
          return {
@@ -44,20 +46,20 @@ export default {
             navMenu:[],
             outsize:{
                 height:"100%"
-            }
+            },
+            selectDocument: []
          }
     },
     computed: {
-        selectDocument(){
-            let folderid = this.$route.params.fid
-            let all_files = res.data.file
-            let ret = []
-            for(var i=0;i<all_files.length;i++) {
-                if(all_files[i].folder_id == folderid) {
-                    ret.push(all_files[i])
-                }
-            }
-            return ret;
+        
+    },
+    watch: {
+       $route(to, from) {
+           
+             // 对路由变化作出响应..
+             let newFid = to.params.fid
+             let oldFid = from.params.fid
+             this.foldersOwnArticle(newFid, oldFid)
         }
     },
     methods:{
@@ -68,27 +70,53 @@ export default {
              if( id != noteid) {
                  this.$router.push({path:`/file/${fid}/note/${id}`})
              }
+          },
+          foldersOwnArticle(newFid, oldFid) {
+            if(newFid != "" && newFid != oldFid) {
+                 let params = {}
+                 params.folderid = newFid;
+                 this.selectDocument = [];
+                api.getFilesByFolder(params).then((res)=> {
+                   let data = res.data
+                   for(let i = 0;i<data.length;i++) {
+                       let item = {}
+                       item.file_id = data[i].ID 
+                       item.title = data[i].Title
+                       item.content = data[i].Content
+                       this.selectDocument.push(item)
+                   }
+                })
+             }
+          },
+          onLoadFn() {
+             let fid = this.$route.params.fid
+             console.log(this.$route)
+             this.foldersOwnArticle(fid, "")
           }
     },
     created() {
-        this.structure = res.data.structure
-        for(var i=0;i<this.structure.length;i++) {
-            let navItem = {} 
-            let id = this.structure[i]["folder_id"]
-            let name = this.structure[i]["name"]
-            let files = this.structure[i]["files"]
-            let path = "";
-            if (files == null || files.length == 0) {
-                path= "/file/"+ id + "/note/"+"empty"
-            }else {
-                let file = files[0];
-                path= "/file/"+ id + "/note/"+file
+        api.getUserFolders().then((res)=> {
+            this.structure = res.data;
+            for(var i=0;i<this.structure.length;i++) {
+                let navItem = {} 
+                let id = this.structure[i]["folder_id"]
+                let name = this.structure[i]["name"]
+                let files = this.structure[i]["files"]
+                let path = "";
+                if (files == null || files.length == "") {
+                    path= "/file/"+ id + "/note/"+"empty"
+                }else {
+                    let file = files;
+                    path= "/file/"+ id + "/note/"+file
+                }
+                navItem.id = id;
+                navItem.path = path;
+                navItem.name = name;
+                this.navMenu.push(navItem)
             }
-            navItem.id = id;
-            navItem.path = path;
-            navItem.name = name;
-            this.navMenu.push(navItem)
-        }
+            this.onLoadFn()
+        })
+
     }
 }
 </script>

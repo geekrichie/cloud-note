@@ -23,5 +23,5 @@ func (user *User) Save() bool{
 
 func (user *User) Find(username string) {
 	db := config.GetDB()
-	db.Where("username = ?", username).First(user)
+	db.Where("username = ?", username).First(&user)
 }

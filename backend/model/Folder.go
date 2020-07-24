@@ -14,9 +14,7 @@ func (f Folder) TableName() string {
 	return "folder"
 }
 
-func GetFoldersByUid(uid int) ([]Folder){
+func (fd *Folder)GetFoldersByUid(uid int,folders *[]Folder){
 	db := config.GetDB()
-	var folders []Folder
 	db.Where("user_id = ?", uid).Find(&folders)
-	return folders
 }
