@@ -9,7 +9,7 @@
     
 </template>
 <script>
-import sidebar from './sidebar'
+import sidebar from './Sidebar'
 import Editor from "./Editor"
 import api from "../api/login"
 export default {

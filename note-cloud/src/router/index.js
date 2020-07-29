@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import Main from '../components/Main'
+import Chart from '../components/Chart'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -10,7 +11,8 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
     { path: '/', component: Main },
-    { path: '/file/:fid/note/:noteid', component: Main }
+    { path: '/file/:fid/note/:noteid', component: Main },
+    { path: "/chart/test",component:Chart}
 ]
 
 const router = new VueRouter({

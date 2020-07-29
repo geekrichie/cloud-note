@@ -4,8 +4,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
 import store from './store'
 import App from './App.vue'
+import HighchartsVue from 'highcharts-vue'
 
 Vue.use(ElementUI)
+Vue.use(HighchartsVue)
 Vue.config.productionTip = false
 
   

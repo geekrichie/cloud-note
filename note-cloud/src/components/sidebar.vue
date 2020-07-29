@@ -5,7 +5,7 @@
                     class="el-menu-vertical-demo"        
                     background-color="#545c64"
                     text-color="#fff"
-                    :default-active="$route.path"
+                    :default-active="defaultActive"
                     router
                     >  
                     <el-menu-item class="add-note">   
@@ -14,8 +14,9 @@
                     </el-menu-item>
                     <el-submenu index="2">
                         <template slot="title">我的文件夹</template>  
-                        <el-menu-item v-for="(folder, index) in navMenu" :key="index" :index="folder.path" 
-                        :class="$route.path==folder.path?'is-active':''">
+                        <el-menu-item v-for="(folder, index) in navMenu" :key="index" :index="folder.id" 
+                        :route="folder.path"
+                       >
                             <span slot="title">{{folder.name}}</span>
                         </el-menu-item>   
                     </el-submenu>
@@ -36,7 +37,6 @@
     </div>
 </template>
 <script>
-// import res from "../assets/json/interface.json"
 import api from "../api/login"
 export default {
     data() {
@@ -51,7 +51,9 @@ export default {
          }
     },
     computed: {
-        
+         defaultActive() {
+            return this.$route.path.split('/')[2];
+        }
     },
     watch: {
        $route(to, from) {
@@ -72,7 +74,7 @@ export default {
              }
           },
           foldersOwnArticle(newFid, oldFid) {
-            if(newFid != "" && newFid != oldFid) {
+            if(newFid != undefined && newFid != "" && newFid != oldFid) {
                  let params = {}
                  params.folderid = newFid;
                  this.selectDocument = [];
@@ -90,7 +92,6 @@ export default {
           },
           onLoadFn() {
              let fid = this.$route.params.fid
-             console.log(this.$route)
              this.foldersOwnArticle(fid, "")
           }
     },
